@@ -1,14 +1,14 @@
-#!/bin/sh
+#!/bin/sh 
 
 # *************
 # Configuration
 # *************
 
 REMOTE="/usr/bin/transmission-remote"
-USERNAME="username"
-PASSWORD="password"
-MAXDOWN="Torrents_In_Queue"
-MAXACTIVE="Total_Active_Torrents"
+USERNAME="veeresh"
+PASSWORD="loveena"
+MAXDOWN="1"
+MAXACTIVE="2"
 CONFIG="/etc/transmission-daemon/settings.json"
 
 # *****************
@@ -29,6 +29,13 @@ NAMELOG=""
 # ********************
 
 $LOGCMD ":: $STARTSCRIPT"
+
+COMPLETED="$($CMD -l | tail --lines=+2 | grep 100% | grep Stopped | awk '{ print $1; }')"
+for ID in $COMPLETED; do
+    NAME="$($CMD --torrent $ID --info | grep Name:)"
+    $LOGCMD "Removing :: $ID: ${NAME#*Name: }"
+    $CMD --torrent $ID --remove 
+done
 
 DOWNACTIVE="$($CMD -l | tail --lines=+2 | grep -v 100% | grep -v Sum | grep -v Stopped | grep -v Verifying | grep -v Will\ Verify | wc -l)"
 if [ $MAXDOWN -lt $DOWNACTIVE ]; then
