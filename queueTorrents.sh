@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh  -x
 
 # *************
 # Configuration
@@ -30,7 +30,7 @@ NAMELOG=""
 
 $LOGCMD ":: $STARTSCRIPT"
 
-COMPLETED="$($CMD -l | tail --lines=+2 | grep 100% | grep Stopped | awk '{ print $1; }')"
+COMPLETED="$($CMD -l | tail --lines=+2 | grep 100% | grep Finished | awk '{ print $1; }')"
 for ID in $COMPLETED; do
     NAME="$($CMD --torrent $ID --info | grep Name:)"
     $LOGCMD "Removing :: $ID: ${NAME#*Name: }"
