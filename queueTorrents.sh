@@ -1,4 +1,6 @@
-#!/bin/sh  -x
+#!/bin/sh 
+exec > /dev/null 2>&1
+set -x
 
 # *************
 # Configuration
